@@ -519,132 +519,127 @@ export default function SmartReportApp() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8f9fa] text-[#202124]">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="bg-blue-600 p-2 rounded-lg">
-              <FileText className="text-white w-5 h-5" />
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
+      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+          <div className="flex items-center gap-3">
+            <div className="rounded-xl bg-blue-600 p-2 shadow-sm">
+              <FileText className="h-5 w-5 text-white" />
             </div>
-            <h1 className="text-xl font-bold tracking-tight">
-              SmartReport <span className="text-blue-600">AI</span>
-            </h1>
+            <div>
+              <h1 className="text-lg font-bold tracking-tight">
+                SmartReport <span className="text-blue-600">AI</span>
+              </h1>
+              <p className="text-[11px] text-slate-400">日報作成を、もっとスマートに。</p>
+            </div>
           </div>
-          <span className="text-sm text-gray-500 hidden sm:inline">
-            日報作成を、もっとスマートに。
-          </span>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8 w-full flex-grow">
+      <main className="mx-auto w-full max-w-7xl flex-grow px-4 py-6 sm:py-8">
         <div className="mb-6 overflow-x-auto">
-          <div className="flex border-b border-gray-200 min-w-max">
+          <div className="inline-flex min-w-max gap-2 rounded-2xl bg-white p-2 shadow-sm ring-1 ring-slate-200">
             {CATEGORIES.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-4 text-sm font-bold transition-all relative ${
+                className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
                   selectedCategory.id === category.id
-                    ? "text-blue-600"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-blue-600 text-white shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 }`}
               >
                 <div className="flex items-center gap-2">
                   {getCategoryIcon(category.id)}
                   {category.name}
                 </div>
-                {selectedCategory.id === category.id && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 rounded-t-full"
-                  />
-                )}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex items-center gap-2 text-sm font-bold text-gray-700">
-            <Layout className="w-4 h-4 text-blue-600" />
-            テンプレート:
-          </div>
+        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              <Layout className="h-4 w-4 text-blue-600" />
+              テンプレート
+            </div>
 
-          <div className="relative flex-grow max-w-xs">
-            <select
-              value={selectedTemplate.id}
-              onChange={(e) =>
-                setSelectedTemplate(
-                  selectedCategory.templates.find((t) => t.id === e.target.value)
-                )
-              }
-              className="w-full appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 pr-10 outline-none cursor-pointer"
-            >
-              {selectedCategory.templates.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="absolute right-3 top-3 w-4 h-4 text-gray-400 pointer-events-none" />
-          </div>
+            <div className="relative w-full max-w-xs">
+              <select
+                value={selectedTemplate.id}
+                onChange={(e) =>
+                  setSelectedTemplate(
+                    selectedCategory.templates.find((t) => t.id === e.target.value)
+                  )
+                }
+                className="w-full appearance-none rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 pr-10 text-sm outline-none transition focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-100"
+              >
+                {selectedCategory.templates.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.name}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3 top-3.5 h-4 w-4 text-slate-400" />
+            </div>
 
-          <p className="text-xs text-gray-500 italic">
-            {selectedTemplate.description}
-          </p>
+            <p className="text-xs text-slate-500">{selectedTemplate.description}</p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <section className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col h-fit">
-            <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
-              <h2 className="font-semibold text-gray-800 flex items-center gap-2">
-                <Send className="w-4 h-4 text-blue-600" />
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/80 px-6 py-4">
+              <h2 className="flex items-center gap-2 text-base font-semibold text-slate-800">
+                <Send className="h-4 w-4 text-blue-600" />
                 入力フォーム
               </h2>
               <button
                 onClick={handleReset}
-                className="text-xs text-gray-500 hover:text-red-500 flex items-center gap-1"
+                className="flex items-center gap-1 text-xs font-medium text-slate-500 transition hover:text-red-500"
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="h-3 w-3" />
                 リセット
               </button>
             </div>
 
-            <div className="p-6 space-y-6">
+            <div className="space-y-6 p-6">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selectedTemplate.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
                   className="space-y-6"
                 >
                   {groupedFields.map((groupName) => (
                     <div key={groupName} className="space-y-4">
-                      <h3 className="text-xs font-bold text-blue-600 uppercase tracking-widest border-l-2 border-blue-600 pl-2">
-                        {groupName}
-                      </h3>
+                      <div className="flex items-center gap-3">
+                        <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
+                          {groupName}
+                        </h3>
+                        <div className="h-px flex-1 bg-slate-200" />
+                      </div>
 
                       <div className="grid grid-cols-1 gap-4">
                         {selectedTemplate.fields
-                          .filter(
-                            (f) => (f.group || "基本情報") === groupName
-                          )
+                          .filter((f) => (f.group || "基本情報") === groupName)
                           .map((field) => (
-                            <div key={field.id} className="space-y-1.5">
-                              <label className="text-sm font-medium text-gray-700">
+                            <div key={field.id} className="space-y-2">
+                              <label className="text-sm font-medium text-slate-700">
                                 {field.label}
                               </label>
 
                               {field.type === "textarea" ? (
                                 <textarea
-                                  rows={3}
+                                  rows={4}
                                   value={formData[field.id] || ""}
                                   onChange={(e) =>
                                     handleInputChange(field.id, e.target.value)
                                   }
                                   placeholder={field.placeholder || ""}
-                                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm resize-none"
+                                  className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 resize-none"
                                 />
                               ) : (
                                 <input
@@ -654,7 +649,7 @@ export default function SmartReportApp() {
                                     handleInputChange(field.id, e.target.value)
                                   }
                                   placeholder={field.placeholder || ""}
-                                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+                                  className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
                                 />
                               )}
                             </div>
@@ -665,24 +660,24 @@ export default function SmartReportApp() {
                 </motion.div>
               </AnimatePresence>
 
-              <div className="space-y-3 pt-4">
+              <div className="space-y-3 pt-2">
                 <button
                   onClick={handleGenerate}
                   disabled={isGenerating || isFormEmpty}
-                  className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${
+                  className={`flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-sm font-bold transition active:scale-[0.99] ${
                     isGenerating || isFormEmpty
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-blue-600 text-white hover:bg-blue-700 shadow-lg active:scale-[0.98]"
+                      ? "cursor-not-allowed bg-slate-200 text-slate-400"
+                      : "bg-blue-600 text-white shadow-sm hover:bg-blue-700"
                   }`}
                 >
                   {isGenerating ? (
                     <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <Loader2 className="h-5 w-5 animate-spin" />
                       生成中...
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-5 h-5" />
+                      <Sparkles className="h-5 w-5" />
                       AIで文章を生成
                     </>
                   )}
@@ -691,22 +686,22 @@ export default function SmartReportApp() {
                 <button
                   onClick={handleFullCopy}
                   disabled={isFormEmpty}
-                  className={`w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 border-2 transition-all ${
+                  className={`flex w-full items-center justify-center gap-2 rounded-2xl border-2 py-3 text-sm font-semibold transition ${
                     isFormEmpty
-                      ? "border-gray-100 text-gray-300"
+                      ? "cursor-not-allowed border-slate-200 text-slate-300"
                       : isFullCopied
-                      ? "border-green-500 text-green-600 bg-green-50"
-                      : "border-blue-600 text-blue-600 hover:bg-blue-50"
+                      ? "border-green-500 bg-green-50 text-green-600"
+                      : "border-blue-200 bg-white text-blue-600 hover:border-blue-400 hover:bg-blue-50"
                   }`}
                 >
                   {isFullCopied ? (
                     <>
-                      <Check className="w-4 h-4" />
+                      <Check className="h-4 w-4" />
                       コピー完了
                     </>
                   ) : (
                     <>
-                      <Clipboard className="w-4 h-4" />
+                      <Clipboard className="h-4 w-4" />
                       入力内容をコピー
                     </>
                   )}
@@ -714,42 +709,46 @@ export default function SmartReportApp() {
               </div>
 
               {error && (
-                <p className="text-sm text-red-500 text-center">{error}</p>
+                <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                  {error}
+                </div>
               )}
             </div>
           </section>
 
-          <section className="bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col min-h-[500px]">
-            <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
-              <h2 className="font-semibold text-gray-800 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-500" />
+          <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm min-h-[520px]">
+            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/80 px-6 py-4">
+              <h2 className="flex items-center gap-2 text-base font-semibold text-slate-800">
+                <Sparkles className="h-4 w-4 text-amber-500" />
                 生成結果
               </h2>
 
               {generatedText && (
                 <button
                   onClick={handleCopy}
-                  className={`text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all ${
+                  className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
                     isCopied
                       ? "bg-green-100 text-green-700"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                   }`}
                 >
                   {isCopied ? (
-                    <Check className="w-3.5 h-3.5" />
+                    <Check className="h-3.5 w-3.5" />
                   ) : (
-                    <Clipboard className="w-3.5 h-3.5" />
+                    <Clipboard className="h-3.5 w-3.5" />
                   )}
                   {isCopied ? "コピー済" : "結果をコピー"}
                 </button>
               )}
             </div>
 
-            <div className="p-6 flex-grow overflow-y-auto max-h-[800px]">
+            <div className="max-h-[800px] overflow-y-auto p-6">
               {!generatedText && !isGenerating && (
-                <div className="flex flex-col items-center justify-center text-gray-400 h-full py-20 text-center">
-                  <FileText className="w-12 h-12 opacity-20 mb-4" />
-                  <p className="text-sm">
+                <div className="flex h-full min-h-[380px] flex-col items-center justify-center text-center text-slate-400">
+                  <div className="mb-4 rounded-full bg-slate-100 p-4">
+                    <FileText className="h-10 w-10 opacity-60" />
+                  </div>
+                  <p className="text-sm leading-6">
                     フォームに入力して、
                     <br />
                     「AIで文章を生成」をクリックしてください。
@@ -759,15 +758,15 @@ export default function SmartReportApp() {
 
               {isGenerating && (
                 <div className="space-y-4 animate-pulse">
-                  <div className="h-4 bg-gray-100 rounded w-3/4"></div>
-                  <div className="h-4 bg-gray-100 rounded w-full"></div>
-                  <div className="h-4 bg-gray-100 rounded w-5/6"></div>
-                  <div className="h-4 bg-gray-100 rounded w-2/3"></div>
+                  <div className="h-4 w-3/4 rounded bg-slate-100"></div>
+                  <div className="h-4 w-full rounded bg-slate-100"></div>
+                  <div className="h-4 w-5/6 rounded bg-slate-100"></div>
+                  <div className="h-4 w-2/3 rounded bg-slate-100"></div>
                 </div>
               )}
 
               {generatedText && (
-                <div className="prose prose-sm max-w-none text-gray-700">
+                <div className="prose prose-sm max-w-none prose-headings:text-slate-800 prose-p:text-slate-700 prose-strong:text-blue-700">
                   <ReactMarkdown>{generatedText}</ReactMarkdown>
                 </div>
               )}
@@ -776,8 +775,8 @@ export default function SmartReportApp() {
         </div>
       </main>
 
-      <footer className="py-8 border-t border-gray-200 text-center">
-        <p className="text-sm text-gray-500">
+      <footer className="border-t border-slate-200 bg-white py-8 text-center">
+        <p className="text-sm text-slate-500">
           © 2026 SmartReport AI. Powered by Gemini.
         </p>
       </footer>
