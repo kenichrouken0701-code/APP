@@ -17,7 +17,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { GoogleGenAI } from "@google/genai";
 
-// --- Constants & Data ---
 const CATEGORIES = [
   {
     id: "ap_report",
@@ -146,7 +145,6 @@ const CATEGORIES = [
   },
 ];
 
-// --- AI Logic ---
 const ai =
   typeof window !== "undefined" && process.env.NEXT_PUBLIC_GEMINI_API_KEY
     ? new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY })
@@ -192,7 +190,6 @@ ${inputContext}
   return response.text || "生成に失敗しました。";
 }
 
-// --- Main Component ---
 export default function SmartReportApp() {
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0]);
   const [selectedTemplate, setSelectedTemplate] = useState(
