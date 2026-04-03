@@ -17,6 +17,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { GoogleGenAI } from "@google/genai";
 
+// --- Constants & Data ---
 const CATEGORIES = [
   {
     id: "ap_report",
