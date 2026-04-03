@@ -13,11 +13,9 @@ import {
   ChevronDown,
   Target,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { GoogleGenAI } from "@google/genai";
 
-// --- Constants & Data ---
 const CATEGORIES = [
   {
     id: "ap_report",
@@ -156,7 +154,6 @@ async function generateReport(template, formData) {
     throw new Error("APIキーが設定されていません。");
   }
 
-  const model = "gemini-2.5-flash";
   const inputContext = Object.entries(formData)
     .map(([k, v]) => {
       const field = template.fields.find((f) => f.id === k);
@@ -184,7 +181,7 @@ ${inputContext}
 `;
 
   const response = await ai.models.generateContent({
-    model,
+    model: "gemini-2.5-flash",
     contents: prompt,
   });
 
@@ -300,15 +297,15 @@ export default function SmartReportApp() {
   );
 
   return (
-    <div className="min-h-screen bg-[#e7ebf3] text-[#344054]">
-      <header className="bg-[#2d55d3] shadow-sm">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 py-5 sm:px-8">
+    <div className="min-h-screen bg-slate-100 text-slate-800">
+      <header className="bg-blue-700 text-white">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5">
           <div className="flex items-center gap-4">
-            <div className="flex h-[62px] w-[62px] items-center justify-center rounded-full bg-[#f4cb43] shadow">
-              <FileText className="h-7 w-7 text-[#2d55d3]" />
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-yellow-400">
+              <FileText className="h-7 w-7 text-blue-700" />
             </div>
             <div>
-              <h1 className="text-[28px] font-black leading-none text-white sm:text-[40px]">
+              <h1 className="text-3xl font-black leading-none sm:text-4xl">
                 振り返りシート
               </h1>
               <p className="mt-1 text-base font-semibold text-white/90">
@@ -317,53 +314,41 @@ export default function SmartReportApp() {
             </div>
           </div>
 
-          <div className="hidden items-center gap-5 sm:flex">
-            <button
-              onClick={handleReset}
-              className="flex items-center gap-2 text-lg font-bold text-white hover:opacity-90"
-            >
-              <RotateCcw className="h-5 w-5" />
-              リセット
-            </button>
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-white font-bold">
-              ?
-            </div>
-          </div>
+          <button
+            onClick={handleReset}
+            className="hidden items-center gap-2 text-lg font-bold sm:flex"
+          >
+            <RotateCcw className="h-5 w-5" />
+            リセット
+          </button>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6">
-        <div className="grid grid-cols-1 gap-7 xl:grid-cols-[1.08fr_0.92fr]">
-          <section className="rounded-[32px] border border-[#d8dde8] bg-[#f4f5f9] p-6 shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
-            <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              <div className="w-full max-w-[420px]">
-                <label className="mb-2 block text-[16px] font-black text-[#2f3a4b]">
-                  担当者/AP名 <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.name || ""}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
-                  className="h-[56px] w-full rounded-2xl border border-[#ccd3df] bg-white px-4 text-base outline-none transition focus:border-[#2d55d3] focus:ring-4 focus:ring-blue-100"
-                />
-              </div>
-
-              <div className="flex h-[56px] items-center gap-3 rounded-2xl border border-[#d4dae6] bg-white px-5">
-                <div className="h-5 w-5 rounded-md border border-[#bcc4d3] bg-white" />
-                <span className="text-[18px] font-black text-[#2f3a4b]">テンプレ選択</span>
-              </div>
+      <main className="mx-auto max-w-7xl px-4 py-6">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+          <section className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+            <div className="mb-6 max-w-md">
+              <label className="mb-2 block text-base font-black text-slate-700">
+                担当者/AP名 <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                value={formData.name || ""}
+                onChange={(e) => handleInputChange("name", e.target.value)}
+                className="h-14 w-full rounded-2xl border border-slate-300 bg-white px-4 text-base outline-none focus:border-blue-600"
+              />
             </div>
 
-            <div className="mb-7 overflow-x-auto">
-              <div className="flex min-w-max gap-4 border-b border-[#d7dde8]">
+            <div className="mb-6 overflow-x-auto">
+              <div className="flex min-w-max gap-3 border-b border-slate-200 pb-2">
                 {CATEGORIES.map((category) => (
                   <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category)}
-                    className={`flex min-w-[108px] flex-col items-center justify-center rounded-t-[22px] border border-b-0 px-4 py-4 text-sm font-black transition ${
+                    className={`flex min-w-[110px] flex-col items-center justify-center rounded-2xl px-4 py-4 text-sm font-black transition ${
                       selectedCategory.id === category.id
-                        ? "bg-[#e6edff] text-[#2d55d3] border-[#cad7ff]"
-                        : "border-transparent text-[#667085] hover:bg-white"
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-white text-slate-600"
                     }`}
                   >
                     <div className="mb-2">{getCategoryIcon(category.id)}</div>
@@ -373,12 +358,12 @@ export default function SmartReportApp() {
               </div>
             </div>
 
-            <div className="mb-7 rounded-[24px] border border-[#dde3ee] bg-white p-5">
-              <div className="mb-3 text-[18px] font-black text-[#2f3a4b]">
+            <div className="mb-6 rounded-3xl border border-slate-200 bg-white p-5">
+              <div className="mb-3 text-lg font-black text-slate-800">
                 テンプレート
               </div>
 
-              <div className="relative mb-3 max-w-[430px]">
+              <div className="relative mb-3 max-w-md">
                 <select
                   value={selectedTemplate.id}
                   onChange={(e) =>
@@ -386,7 +371,7 @@ export default function SmartReportApp() {
                       selectedCategory.templates.find((t) => t.id === e.target.value)
                     )
                   }
-                  className="h-[56px] w-full appearance-none rounded-2xl border border-[#ccd3df] bg-[#fbfcff] px-4 pr-10 text-base outline-none transition focus:border-[#2d55d3] focus:ring-4 focus:ring-blue-100"
+                  className="h-14 w-full appearance-none rounded-2xl border border-slate-300 bg-slate-50 px-4 pr-10 text-base outline-none focus:border-blue-600"
                 >
                   {selectedCategory.templates.map((t) => (
                     <option key={t.id} value={t.id}>
@@ -397,14 +382,14 @@ export default function SmartReportApp() {
                 <ChevronDown className="pointer-events-none absolute right-4 top-4 h-5 w-5 text-slate-400" />
               </div>
 
-              <div className="rounded-xl border border-dashed border-[#b8efc5] bg-[#f8fff9] px-4 py-3 text-sm font-medium text-slate-500">
+              <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-slate-600">
                 {selectedTemplate.description}
               </div>
             </div>
 
-            <div className="rounded-[26px] border border-[#dde3ee] bg-white p-5 sm:p-6">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6">
               <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-[22px] font-black text-[#2f3a4b]">入力フォーム</h2>
+                <h2 className="text-2xl font-black text-slate-800">入力フォーム</h2>
                 <button
                   onClick={handleReset}
                   className="flex items-center gap-1 text-sm font-bold text-slate-500 hover:text-red-500"
@@ -424,8 +409,8 @@ export default function SmartReportApp() {
                 >
                   {groupedFields.map((groupName) => (
                     <div key={groupName}>
-                      <div className="mb-4 border-b border-[#d9dee8] pb-3">
-                        <h3 className="text-[18px] font-black text-[#2f3a4b]">
+                      <div className="mb-4 border-b border-slate-200 pb-3">
+                        <h3 className="text-lg font-black text-slate-800">
                           {groupName}
                         </h3>
                       </div>
@@ -435,7 +420,7 @@ export default function SmartReportApp() {
                           .filter((f) => (f.group || "基本情報") === groupName)
                           .map((field) => (
                             <div key={field.id} className={field.type === "textarea" ? "md:col-span-2" : ""}>
-                              <label className="mb-2 block text-[15px] font-black text-[#344054]">
+                              <label className="mb-2 block text-sm font-black text-slate-700">
                                 {field.label}
                               </label>
 
@@ -445,7 +430,7 @@ export default function SmartReportApp() {
                                   value={formData[field.id] || ""}
                                   onChange={(e) => handleInputChange(field.id, e.target.value)}
                                   placeholder={field.placeholder || ""}
-                                  className="w-full rounded-2xl border border-[#ccd3df] bg-[#fbfcff] px-4 py-3 text-base outline-none transition placeholder:text-slate-400 focus:border-[#2d55d3] focus:bg-white focus:ring-4 focus:ring-blue-100 resize-none"
+                                  className="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-base outline-none focus:border-blue-600 resize-none"
                                 />
                               ) : (
                                 <input
@@ -453,7 +438,7 @@ export default function SmartReportApp() {
                                   value={formData[field.id] || ""}
                                   onChange={(e) => handleInputChange(field.id, e.target.value)}
                                   placeholder={field.placeholder || ""}
-                                  className="h-[56px] w-full rounded-2xl border border-[#ccd3df] bg-[#fbfcff] px-4 text-base outline-none transition placeholder:text-slate-400 focus:border-[#2d55d3] focus:bg-white focus:ring-4 focus:ring-blue-100"
+                                  className="h-14 w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 text-base outline-none focus:border-blue-600"
                                 />
                               )}
                             </div>
@@ -468,12 +453,12 @@ export default function SmartReportApp() {
                 <button
                   onClick={handleFullCopy}
                   disabled={isFormEmpty}
-                  className={`flex h-[54px] items-center justify-center gap-2 rounded-2xl border text-base font-black transition ${
+                  className={`flex h-14 items-center justify-center gap-2 rounded-2xl border text-base font-black transition ${
                     isFormEmpty
-                      ? "cursor-not-allowed border-[#e1e6ef] bg-white text-slate-300"
+                      ? "cursor-not-allowed border-slate-200 bg-white text-slate-300"
                       : isFullCopied
                       ? "border-green-500 bg-green-50 text-green-600"
-                      : "border-[#2d55d3] bg-white text-[#2d55d3] hover:bg-[#eef3ff]"
+                      : "border-blue-700 bg-white text-blue-700 hover:bg-blue-50"
                   }`}
                 >
                   {isFullCopied ? <Check className="h-5 w-5" /> : <Clipboard className="h-5 w-5" />}
@@ -483,10 +468,10 @@ export default function SmartReportApp() {
                 <button
                   onClick={handleGenerate}
                   disabled={isGenerating || isFormEmpty}
-                  className={`flex h-[54px] items-center justify-center gap-2 rounded-2xl text-base font-black transition ${
+                  className={`flex h-14 items-center justify-center gap-2 rounded-2xl text-base font-black transition ${
                     isGenerating || isFormEmpty
-                      ? "cursor-not-allowed bg-[#dbe3f4] text-slate-400"
-                      : "bg-[#2d55d3] text-white hover:bg-[#2348bc]"
+                      ? "cursor-not-allowed bg-slate-300 text-slate-500"
+                      : "bg-blue-700 text-white hover:bg-blue-800"
                   }`}
                 >
                   {isGenerating ? (
@@ -511,11 +496,11 @@ export default function SmartReportApp() {
             </div>
           </section>
 
-          <section className="rounded-[32px] border border-[#d8dde8] bg-[#f4f5f9] p-6 shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
-            <div className="h-full rounded-[26px] border border-[#dde3ee] bg-white overflow-hidden">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-dashed border-[#d5dbe7] px-6 py-5">
-                <h2 className="flex items-center gap-3 text-[22px] font-black text-[#2f3a4b]">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#edf2ff] text-[#2d55d3]">
+          <section className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+            <div className="h-full rounded-3xl border border-slate-200 bg-white overflow-hidden">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-6 py-5">
+                <h2 className="flex items-center gap-3 text-2xl font-black text-slate-800">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
                     <Sparkles className="h-5 w-5" />
                   </div>
                   生成コメント
@@ -524,7 +509,7 @@ export default function SmartReportApp() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={handleReset}
-                    className="flex h-[50px] items-center gap-2 rounded-2xl border border-[#d7dde9] bg-white px-4 text-base font-black text-slate-600 transition hover:bg-slate-50"
+                    className="flex h-12 items-center gap-2 rounded-2xl border border-slate-300 bg-white px-4 text-base font-black text-slate-600"
                   >
                     <RotateCcw className="h-5 w-5" />
                     リセット(終話)
@@ -533,12 +518,12 @@ export default function SmartReportApp() {
                   <button
                     onClick={handleCopy}
                     disabled={!generatedText}
-                    className={`flex h-[50px] items-center gap-2 rounded-2xl px-4 text-base font-black transition ${
+                    className={`flex h-12 items-center gap-2 rounded-2xl px-4 text-base font-black transition ${
                       !generatedText
-                        ? "cursor-not-allowed bg-[#dbe3f4] text-white/70"
+                        ? "cursor-not-allowed bg-slate-300 text-white/70"
                         : isCopied
                         ? "bg-green-500 text-white"
-                        : "bg-[#2d55d3] text-white hover:bg-[#2348bc]"
+                        : "bg-blue-700 text-white hover:bg-blue-800"
                     }`}
                   >
                     {isCopied ? <Check className="h-5 w-5" /> : <Clipboard className="h-5 w-5" />}
@@ -549,15 +534,15 @@ export default function SmartReportApp() {
 
               <div className="p-6">
                 {!generatedText && !isGenerating && (
-                  <div className="min-h-[620px] rounded-[22px] border border-[#d9dee8] bg-[#fbfcfe] p-6">
-                    <p className="text-[20px] font-medium text-[#374151]">
+                  <div className="min-h-[620px] rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                    <p className="text-xl font-medium text-slate-700">
                       該当するテンプレートがありません。
                     </p>
                   </div>
                 )}
 
                 {isGenerating && (
-                  <div className="min-h-[620px] rounded-[22px] border border-[#d9dee8] bg-[#fbfcfe] p-6">
+                  <div className="min-h-[620px] rounded-3xl border border-slate-200 bg-slate-50 p-6">
                     <div className="space-y-4 animate-pulse">
                       <div className="h-4 w-3/4 rounded bg-slate-200"></div>
                       <div className="h-4 w-full rounded bg-slate-200"></div>
@@ -568,8 +553,8 @@ export default function SmartReportApp() {
                 )}
 
                 {generatedText && (
-                  <div className="min-h-[620px] rounded-[22px] border border-[#d9dee8] bg-[#fbfcfe] p-6">
-                    <div className="prose prose-sm max-w-none prose-headings:text-slate-800 prose-p:text-slate-700 prose-strong:text-[#2d55d3]">
+                  <div className="min-h-[620px] rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                    <div className="prose prose-sm max-w-none prose-headings:text-slate-800 prose-p:text-slate-700 prose-strong:text-blue-700">
                       <ReactMarkdown>{generatedText}</ReactMarkdown>
                     </div>
                   </div>
