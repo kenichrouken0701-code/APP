@@ -47,7 +47,7 @@ export default function Home() {
 
           <button style={{
             marginTop: "10px",
-            background: "#2f5be7",
+            background: "#facc15",
             color: "white",
             padding: "10px 20px",
             border: "none",
