@@ -12,6 +12,19 @@ const templates = {
   "定着": ["定着振り返り"],
 };
 
+const inputStyle = {
+  width: "100%",
+  padding: "10px",
+  marginBottom: "10px"
+};
+
+const textareaStyle = {
+  width: "100%",
+  height: "100px",
+  padding: "10px",
+  marginBottom: "10px"
+};
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState("AP日報");
   const [template, setTemplate] = useState("標準AP日報");
@@ -56,7 +69,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* ▼ テンプレ選択 */}
+        {/* テンプレ選択 */}
         <select
           value={template}
           onChange={(e) => setTemplate(e.target.value)}
@@ -86,17 +99,71 @@ export default function Home() {
           }}>
             <h2>{activeTab} 入力</h2>
 
-            <input
-              placeholder="担当者/AP名"
-              style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-            />
+            <input placeholder="担当者/AP名" style={inputStyle} />
 
-            <textarea
-              placeholder={`${template} の内容`}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              style={{ width: "100%", height: "150px", padding: "10px" }}
-            />
+            {/* 🔥ここが切り替えUI */}
+            {activeTab === "モーニング" && (
+              <>
+                <input placeholder="日付" style={inputStyle} />
+                <textarea placeholder="【マナー】" style={textareaStyle} />
+                <textarea placeholder="【インパクト】" style={textareaStyle} />
+                <input placeholder="スピーカー" style={inputStyle} />
+                <textarea placeholder="【内容】" style={textareaStyle} />
+                <textarea placeholder="【気づき】" style={textareaStyle} />
+                <textarea placeholder="【AP】" style={textareaStyle} />
+                <textarea placeholder="【ビジョン】" style={textareaStyle} />
+              </>
+            )}
+
+            {activeTab === "ミーティング" && (
+              <>
+                <input placeholder="スピーカー" style={inputStyle} />
+                <textarea placeholder="【内容】" style={textareaStyle} />
+                <textarea placeholder="【気づき】" style={textareaStyle} />
+                <textarea placeholder="【AP】" style={textareaStyle} />
+              </>
+            )}
+
+            {activeTab === "OB" && (
+              <>
+                <input placeholder="日付" style={inputStyle} />
+                <input placeholder="名前" style={inputStyle} />
+                <input placeholder="年齢" style={inputStyle} />
+                <textarea placeholder="【内容】" style={textareaStyle} />
+                <textarea placeholder="【その人の魅力的な目標】" style={textareaStyle} />
+                <textarea placeholder="【その人の危機感】" style={textareaStyle} />
+                <textarea placeholder="【どう提案したのか？】" style={textareaStyle} />
+                <textarea placeholder="【よかった点】" style={textareaStyle} />
+                <textarea placeholder="【問題点】" style={textareaStyle} />
+                <textarea placeholder="【改善策】" style={textareaStyle} />
+              </>
+            )}
+
+            {activeTab === "定着" && (
+              <>
+                <input placeholder="名前" style={inputStyle} />
+                <input placeholder="稼働拠点" style={inputStyle} />
+                <input placeholder="稼働時間" style={inputStyle} />
+                <input placeholder="トーク覚えたか" style={inputStyle} />
+                <input placeholder="勤怠ブレあったか" style={inputStyle} />
+                <input placeholder="生活デッドライン" style={inputStyle} />
+                <textarea placeholder="【今日話した内容】" style={textareaStyle} />
+                <input placeholder="セットアップ組んだ人" style={inputStyle} />
+                <input placeholder="次回予定日" style={inputStyle} />
+                <input placeholder="クレームリスク" style={inputStyle} />
+                <input placeholder="天才と褒めたか" style={inputStyle} />
+                <textarea placeholder="【1週間後どういう状態にするか】" style={textareaStyle} />
+              </>
+            )}
+
+            {activeTab === "AP日報" && (
+              <textarea
+                placeholder="標準AP日報の内容"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                style={textareaStyle}
+              />
+            )}
 
             <button style={{
               marginTop: "10px",
