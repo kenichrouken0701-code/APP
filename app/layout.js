@@ -2,7 +2,6 @@ import "./globals.css";
 
 export const metadata = {
   title: "振り返りシート",
-  description: "振り返りシート",
 };
 
 export default function RootLayout({ children }) {
