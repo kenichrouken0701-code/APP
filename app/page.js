@@ -4,8 +4,17 @@ import { useState } from "react";
 
 const tabs = ["AP日報", "モーニング", "ミーティング", "OB", "定着"];
 
+const templates = {
+  "AP日報": ["標準AP日報"],
+  "モーニング": ["モーニング振り返り"],
+  "ミーティング": ["ミーティング振り返り"],
+  "OB": ["OB振り返り"],
+  "定着": ["定着振り返り"],
+};
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState("AP日報");
+  const [template, setTemplate] = useState("標準AP日報");
   const [text, setText] = useState("");
 
   return (
@@ -25,11 +34,14 @@ export default function Home() {
       <div style={{ padding: "20px" }}>
         
         {/* タブ */}
-        <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <div style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
           {tabs.map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => {
+                setActiveTab(tab);
+                setTemplate(templates[tab][0]);
+              }}
               style={{
                 padding: "10px 15px",
                 borderRadius: "8px",
@@ -43,6 +55,22 @@ export default function Home() {
             </button>
           ))}
         </div>
+
+        {/* ▼ テンプレ選択 */}
+        <select
+          value={template}
+          onChange={(e) => setTemplate(e.target.value)}
+          style={{
+            padding: "10px",
+            marginBottom: "20px",
+            borderRadius: "8px",
+            border: "1px solid #ccc"
+          }}
+        >
+          {templates[activeTab].map((t) => (
+            <option key={t}>{t}</option>
+          ))}
+        </select>
 
         <div style={{
           display: "grid",
@@ -64,7 +92,7 @@ export default function Home() {
             />
 
             <textarea
-              placeholder={`${activeTab} の内容`}
+              placeholder={`${template} の内容`}
               value={text}
               onChange={(e) => setText(e.target.value)}
               style={{ width: "100%", height: "150px", padding: "10px" }}
