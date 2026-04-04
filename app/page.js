@@ -30,6 +30,12 @@ export default function Home() {
   const [template, setTemplate] = useState("標準AP日報");
   const [text, setText] = useState("");
 
+  // 🔥コピー機能
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text || "");
+    alert("コピーしました！");
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "#eef2f7" }}>
       
@@ -101,7 +107,7 @@ export default function Home() {
 
             <input placeholder="担当者/AP名" style={inputStyle} />
 
-            {/* 🔥ここが切り替えUI */}
+            {/* モーニング */}
             {activeTab === "モーニング" && (
               <>
                 <input placeholder="日付" style={inputStyle} />
@@ -115,6 +121,7 @@ export default function Home() {
               </>
             )}
 
+            {/* ミーティング */}
             {activeTab === "ミーティング" && (
               <>
                 <input placeholder="スピーカー" style={inputStyle} />
@@ -124,6 +131,7 @@ export default function Home() {
               </>
             )}
 
+            {/* OB */}
             {activeTab === "OB" && (
               <>
                 <input placeholder="日付" style={inputStyle} />
@@ -139,6 +147,7 @@ export default function Home() {
               </>
             )}
 
+            {/* 定着 */}
             {activeTab === "定着" && (
               <>
                 <input placeholder="名前" style={inputStyle} />
@@ -156,6 +165,7 @@ export default function Home() {
               </>
             )}
 
+            {/* AP日報 */}
             {activeTab === "AP日報" && (
               <textarea
                 placeholder="標準AP日報の内容"
@@ -184,6 +194,22 @@ export default function Home() {
             borderRadius: "10px"
           }}>
             <h2>生成コメント</h2>
+
+            {/* 🔥コピー */}
+            <button
+              onClick={handleCopy}
+              style={{
+                marginBottom: "10px",
+                background: "#eab308",
+                color: "white",
+                padding: "8px 16px",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer"
+              }}
+            >
+              コピー
+            </button>
 
             <div style={{
               border: "1px solid #ccc",
