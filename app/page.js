@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 
+const tabs = ["AP日報", "モーニング", "ミーティング", "OB", "定着"];
+
 export default function Home() {
+  const [activeTab, setActiveTab] = useState("AP日報");
   const [text, setText] = useState("");
 
   return (
     <div style={{ minHeight: "100vh", background: "#eef2f7" }}>
+      
       {/* header */}
       <div style={{
         background: "#eab308",
@@ -18,60 +22,83 @@ export default function Home() {
         振り返りシート
       </div>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "20px",
-        padding: "20px"
-      }}>
+      <div style={{ padding: "20px" }}>
         
-        {/* 左 */}
-        <div style={{
-          background: "white",
-          padding: "20px",
-          borderRadius: "10px"
-        }}>
-          <h2>入力</h2>
-
-          <input
-            placeholder="担当者/AP名"
-            style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-          />
-
-          <textarea
-            placeholder="内容"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            style={{ width: "100%", height: "150px", padding: "10px" }}
-          />
-
-          <button style={{
-            marginTop: "10px",
-            background: "#facc15",
-            color: "white",
-            padding: "10px 20px",
-            border: "none",
-            borderRadius: "5px"
-          }}>
-            生成
-          </button>
+        {/* タブ */}
+        <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                padding: "10px 15px",
+                borderRadius: "8px",
+                border: "none",
+                background: activeTab === tab ? "#eab308" : "#ddd",
+                color: activeTab === tab ? "white" : "black",
+                fontWeight: "bold"
+              }}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
 
-        {/* 右 */}
         <div style={{
-          background: "white",
-          padding: "20px",
-          borderRadius: "10px"
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "20px"
         }}>
-          <h2>生成コメント</h2>
-
+          
+          {/* 左 */}
           <div style={{
-            border: "1px solid #ccc",
-            minHeight: "200px",
-            padding: "10px"
+            background: "white",
+            padding: "20px",
+            borderRadius: "10px"
           }}>
-            {text || "ここに結果が出る"}
+            <h2>{activeTab} 入力</h2>
+
+            <input
+              placeholder="担当者/AP名"
+              style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+            />
+
+            <textarea
+              placeholder={`${activeTab} の内容`}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              style={{ width: "100%", height: "150px", padding: "10px" }}
+            />
+
+            <button style={{
+              marginTop: "10px",
+              background: "#eab308",
+              color: "white",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "5px"
+            }}>
+              生成
+            </button>
           </div>
+
+          {/* 右 */}
+          <div style={{
+            background: "white",
+            padding: "20px",
+            borderRadius: "10px"
+          }}>
+            <h2>生成コメント</h2>
+
+            <div style={{
+              border: "1px solid #ccc",
+              minHeight: "200px",
+              padding: "10px"
+            }}>
+              {text || "ここに結果が出る"}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
