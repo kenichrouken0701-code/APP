@@ -9,7 +9,7 @@ export default function Home() {
     <div style={{ minHeight: "100vh", background: "#eef2f7" }}>
       {/* header */}
       <div style={{
-        background: "#2f5be7",
+        background: "#eab308",
         color: "white",
         padding: "20px",
         fontSize: "24px",
