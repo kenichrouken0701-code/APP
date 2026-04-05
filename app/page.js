@@ -6,7 +6,7 @@ const tabs = ["AP日報", "モーニング", "ミーティング", "OB", "定着
 
 const templates = {
   AP日報: ["標準AP日報"],
-  モーニング: ["モーニング振り返り"],
+  モーニング: ["モーニング振り返り", "モーニング依頼"],
   ミーティング: ["ミーティング振り返り"],
   OB: ["OB振り返り"],
   定着: ["定着振り返り"],
@@ -110,7 +110,7 @@ export default function Home() {
 
     if (activeTab === "モーニング") {
       resultText =
-        `【モーニング振り返り】\n` +
+        `【${template}】\n` +
         `担当者/AP名: ${currentData.person}\n` +
         `日付: ${currentData.date}\n` +
         `【マナー】\n${currentData.manner}\n\n` +
