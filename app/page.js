@@ -16,6 +16,9 @@ const emptyTabData = {
   AP日報: {
     person: "",
     text: "",
+    goodPoint: "",
+    improvementPoint: "",
+    apSystem: "",
     result: "",
   },
   モーニング: {
@@ -110,8 +113,12 @@ export default function Home() {
     if (activeTab === "AP日報") {
       resultText =
         `【AP日報】\n` +
-        `担当者/AP名: ${currentData.person}\n` +
-        `内容:\n${currentData.text}`;
+        `担当者/AP名: ${currentData.person}\n\n` +
+        `【内容】\n${currentData.text}\n\n` +
+        `～システムの振り返り～\n` +
+        `【良かった点】\n${currentData.goodPoint}\n\n` +
+        `【改善点】\n${currentData.improvementPoint}\n\n` +
+        `【AP】\n${currentData.apSystem}`;
     }
 
     if (activeTab === "モーニング" && template === "モーニング振り返り") {
@@ -295,12 +302,37 @@ export default function Home() {
             )}
 
             {activeTab === "AP日報" && (
-              <textarea
-                placeholder="標準AP日報の内容"
-                value={currentData.text}
-                onChange={(e) => updateField("text", e.target.value)}
-                style={{ ...textareaStyle, minHeight: "160px" }}
-              />
+              <>
+                <textarea
+                  placeholder="標準AP日報の内容"
+                  value={currentData.text}
+                  onChange={(e) => updateField("text", e.target.value)}
+                  style={{ ...textareaStyle, minHeight: "160px" }}
+                />
+
+                <div style={sectionTitleStyle}>～システムの振り返り～</div>
+
+                <textarea
+                  placeholder="【良かった点】"
+                  value={currentData.goodPoint}
+                  onChange={(e) => updateField("goodPoint", e.target.value)}
+                  style={textareaStyle}
+                />
+
+                <textarea
+                  placeholder="【改善点】"
+                  value={currentData.improvementPoint}
+                  onChange={(e) => updateField("improvementPoint", e.target.value)}
+                  style={textareaStyle}
+                />
+
+                <textarea
+                  placeholder="【AP】"
+                  value={currentData.apSystem}
+                  onChange={(e) => updateField("apSystem", e.target.value)}
+                  style={textareaStyle}
+                />
+              </>
             )}
 
             {activeTab === "モーニング" && template === "モーニング振り返り" && (
@@ -603,6 +635,14 @@ const textareaStyle = {
   border: "1px solid #ccc",
   boxSizing: "border-box",
   resize: "vertical",
+};
+
+const sectionTitleStyle = {
+  fontWeight: "bold",
+  fontSize: "18px",
+  marginTop: "8px",
+  marginBottom: "10px",
+  color: "#444",
 };
 
 const mainButton = {
