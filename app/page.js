@@ -13,15 +13,9 @@ const templates = {
 };
 
 const emptyTabData = {
-  AP日報: {
-    person: "",
-    text: "",
-    result: "",
-  },
+  AP日報: { person: "", text: "", result: "" },
   モーニング: {
     person: "",
-
-    // モーニング振り返り
     date: "",
     manner: "",
     impact: "",
@@ -30,15 +24,12 @@ const emptyTabData = {
     insight: "",
     ap: "",
     vision: "",
-
-    // モーニング依頼
     targetAge: "",
     joinWeek: "",
     currentState: "",
     issue: "",
     request: "",
     landing: "",
-
     result: "",
   },
   ミーティング: {
@@ -136,7 +127,6 @@ export default function Home() {
     if (activeTab === "モーニング" && template === "モーニング依頼") {
       resultText =
         `【モーニング依頼】\n` +
-        `担当者/AP名: ${currentData.person}\n` +
         `ターゲット（年齢）: ${currentData.targetAge}\n` +
         `入社〇週目: ${currentData.joinWeek}\n\n` +
         `【現状】\n${currentData.currentState}\n\n` +
@@ -195,29 +185,12 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#eef2f7" }}>
-      <div
-        style={{
-          background: "#eab308",
-          color: "white",
-          padding: isMobile ? "16px" : "20px",
-          fontSize: isMobile ? "20px" : "26px",
-          fontWeight: "bold",
-          letterSpacing: "1px",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-        }}
-      >
+      <div style={{ background: "#eab308", color: "white", padding: "20px", fontSize: "26px", fontWeight: "bold" }}>
         振り返りシート
       </div>
 
-      <div style={{ padding: isMobile ? "16px" : "24px" }}>
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            marginBottom: "16px",
-            flexWrap: "wrap",
-          }}
-        >
+      <div style={{ padding: "20px" }}>
+        <div style={{ display: "flex", gap: "10px", marginBottom: "16px", flexWrap: "wrap" }}>
           {tabs.map((tab) => (
             <button
               key={tab}
@@ -232,7 +205,6 @@ export default function Home() {
                 background: activeTab === tab ? "#eab308" : "#ddd",
                 color: activeTab === tab ? "white" : "#333",
                 fontWeight: "bold",
-                cursor: "pointer",
               }}
             >
               {tab}
@@ -243,309 +215,43 @@ export default function Home() {
         <select
           value={template}
           onChange={(e) => setTemplate(e.target.value)}
-          style={{
-            padding: "12px",
-            borderRadius: "10px",
-            border: "1px solid #ccc",
-            marginBottom: "20px",
-            fontSize: "16px",
-            width: isMobile ? "100%" : "260px",
-          }}
+          style={{ padding: "12px", marginBottom: "20px", borderRadius: "10px" }}
         >
           {templates[activeTab].map((t) => (
             <option key={t}>{t}</option>
           ))}
         </select>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-            gap: "20px",
-          }}
-        >
-          <div
-            style={{
-              background: "white",
-              borderRadius: "16px",
-              padding: "24px",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "16px",
-                gap: "12px",
-                flexWrap: "wrap",
-              }}
-            >
-              <h2 style={{ margin: 0, fontSize: isMobile ? "24px" : "28px" }}>
-                {activeTab} 入力
-              </h2>
-
-              <button onClick={handleReset} style={subButton}>
-                このタブをリセット
-              </button>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "20px" }}>
+          
+          {/* 左 */}
+          <div style={{ background: "white", borderRadius: "16px", padding: "24px" }}>
+            
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <h2>{activeTab} 入力</h2>
+              <button onClick={handleReset}>リセット</button>
             </div>
 
-            <input
-              placeholder="担当者/AP名"
-              style={inputStyle}
-              value={currentData.person || ""}
-              onChange={(e) => updateField("person", e.target.value)}
-            />
-
-            {activeTab === "モーニング" && template === "モーニング振り返り" && (
-              <>
-                <input
-                  placeholder="日付"
-                  style={inputStyle}
-                  value={currentData.date}
-                  onChange={(e) => updateField("date", e.target.value)}
-                />
-                <textarea
-                  placeholder="【マナー】"
-                  style={textareaStyle}
-                  value={currentData.manner}
-                  onChange={(e) => updateField("manner", e.target.value)}
-                />
-                <textarea
-                  placeholder="【インパクト】"
-                  style={textareaStyle}
-                  value={currentData.impact}
-                  onChange={(e) => updateField("impact", e.target.value)}
-                />
-                <input
-                  placeholder="スピーカー"
-                  style={inputStyle}
-                  value={currentData.speaker}
-                  onChange={(e) => updateField("speaker", e.target.value)}
-                />
-                <textarea
-                  placeholder="【内容】"
-                  style={textareaStyle}
-                  value={currentData.content}
-                  onChange={(e) => updateField("content", e.target.value)}
-                />
-                <textarea
-                  placeholder="【気づき】"
-                  style={textareaStyle}
-                  value={currentData.insight}
-                  onChange={(e) => updateField("insight", e.target.value)}
-                />
-                <textarea
-                  placeholder="【AP】"
-                  style={textareaStyle}
-                  value={currentData.ap}
-                  onChange={(e) => updateField("ap", e.target.value)}
-                />
-                <textarea
-                  placeholder="【ビジョン】"
-                  style={textareaStyle}
-                  value={currentData.vision}
-                  onChange={(e) => updateField("vision", e.target.value)}
-                />
-              </>
+            {/* 👇ここが今回のポイント */}
+            {!(activeTab === "モーニング" && template === "モーニング依頼") && (
+              <input
+                placeholder="担当者/AP名"
+                value={currentData.person || ""}
+                onChange={(e) => updateField("person", e.target.value)}
+                style={inputStyle}
+              />
             )}
 
+            {/* モーニング依頼 */}
             {activeTab === "モーニング" && template === "モーニング依頼" && (
               <>
-                <input
-                  placeholder="ターゲット（年齢）"
-                  style={inputStyle}
-                  value={currentData.targetAge}
-                  onChange={(e) => updateField("targetAge", e.target.value)}
-                />
-                <input
-                  placeholder="入社〇週目"
-                  style={inputStyle}
-                  value={currentData.joinWeek}
-                  onChange={(e) => updateField("joinWeek", e.target.value)}
-                />
-                <textarea
-                  placeholder="【現状】"
-                  style={textareaStyle}
-                  value={currentData.currentState}
-                  onChange={(e) => updateField("currentState", e.target.value)}
-                />
-                <textarea
-                  placeholder="【課題】"
-                  style={textareaStyle}
-                  value={currentData.issue}
-                  onChange={(e) => updateField("issue", e.target.value)}
-                />
-                <textarea
-                  placeholder="【要望】"
-                  style={textareaStyle}
-                  value={currentData.request}
-                  onChange={(e) => updateField("request", e.target.value)}
-                />
-                <textarea
-                  placeholder="【着地】"
-                  style={textareaStyle}
-                  value={currentData.landing}
-                  onChange={(e) => updateField("landing", e.target.value)}
-                />
+                <input placeholder="ターゲット（年齢）" value={currentData.targetAge} onChange={(e) => updateField("targetAge", e.target.value)} style={inputStyle} />
+                <input placeholder="入社〇週目" value={currentData.joinWeek} onChange={(e) => updateField("joinWeek", e.target.value)} style={inputStyle} />
+                <textarea placeholder="【現状】" value={currentData.currentState} onChange={(e) => updateField("currentState", e.target.value)} style={textareaStyle} />
+                <textarea placeholder="【課題】" value={currentData.issue} onChange={(e) => updateField("issue", e.target.value)} style={textareaStyle} />
+                <textarea placeholder="【要望】" value={currentData.request} onChange={(e) => updateField("request", e.target.value)} style={textareaStyle} />
+                <textarea placeholder="【着地】" value={currentData.landing} onChange={(e) => updateField("landing", e.target.value)} style={textareaStyle} />
               </>
-            )}
-
-            {activeTab === "ミーティング" && (
-              <>
-                <input
-                  placeholder="スピーカー"
-                  style={inputStyle}
-                  value={currentData.speaker}
-                  onChange={(e) => updateField("speaker", e.target.value)}
-                />
-                <textarea
-                  placeholder="【内容】"
-                  style={textareaStyle}
-                  value={currentData.content}
-                  onChange={(e) => updateField("content", e.target.value)}
-                />
-                <textarea
-                  placeholder="【気づき】"
-                  style={textareaStyle}
-                  value={currentData.insight}
-                  onChange={(e) => updateField("insight", e.target.value)}
-                />
-                <textarea
-                  placeholder="【AP】"
-                  style={textareaStyle}
-                  value={currentData.ap}
-                  onChange={(e) => updateField("ap", e.target.value)}
-                />
-              </>
-            )}
-
-            {activeTab === "OB" && (
-              <>
-                <input
-                  placeholder="日付"
-                  style={inputStyle}
-                  value={currentData.date}
-                  onChange={(e) => updateField("date", e.target.value)}
-                />
-                <input
-                  placeholder="名前"
-                  style={inputStyle}
-                  value={currentData.name}
-                  onChange={(e) => updateField("name", e.target.value)}
-                />
-                <input
-                  placeholder="年齢"
-                  style={inputStyle}
-                  value={currentData.age}
-                  onChange={(e) => updateField("age", e.target.value)}
-                />
-                <textarea
-                  placeholder="【内容】"
-                  style={textareaStyle}
-                  value={currentData.content}
-                  onChange={(e) => updateField("content", e.target.value)}
-                />
-                <textarea
-                  placeholder="【その人の魅力的な目標】"
-                  style={textareaStyle}
-                  value={currentData.goal}
-                  onChange={(e) => updateField("goal", e.target.value)}
-                />
-                <textarea
-                  placeholder="【その人の危機感】"
-                  style={textareaStyle}
-                  value={currentData.crisis}
-                  onChange={(e) => updateField("crisis", e.target.value)}
-                />
-                <textarea
-                  placeholder="【どう提案したのか？】"
-                  style={textareaStyle}
-                  value={currentData.proposal}
-                  onChange={(e) => updateField("proposal", e.target.value)}
-                />
-                <textarea
-                  placeholder="【よかった点】"
-                  style={textareaStyle}
-                  value={currentData.good}
-                  onChange={(e) => updateField("good", e.target.value)}
-                />
-                <textarea
-                  placeholder="【問題点】"
-                  style={textareaStyle}
-                  value={currentData.problem}
-                  onChange={(e) => updateField("problem", e.target.value)}
-                />
-                <textarea
-                  placeholder="【改善策】"
-                  style={textareaStyle}
-                  value={currentData.solution}
-                  onChange={(e) => updateField("solution", e.target.value)}
-                />
-              </>
-            )}
-
-            {activeTab === "定着" && (
-              <>
-                <input
-                  placeholder="名前"
-                  style={inputStyle}
-                  value={currentData.name}
-                  onChange={(e) => updateField("name", e.target.value)}
-                />
-                <input
-                  placeholder="稼働拠点"
-                  style={inputStyle}
-                  value={currentData.base}
-                  onChange={(e) => updateField("base", e.target.value)}
-                />
-                <input
-                  placeholder="稼働時間"
-                  style={inputStyle}
-                  value={currentData.hours}
-                  onChange={(e) => updateField("hours", e.target.value)}
-                />
-                <input
-                  placeholder="トーク覚えたか"
-                  style={inputStyle}
-                  value={currentData.talked}
-                  onChange={(e) => updateField("talked", e.target.value)}
-                />
-                <input
-                  placeholder="勤怠ブレあったか"
-                  style={inputStyle}
-                  value={currentData.attendance}
-                  onChange={(e) => updateField("attendance", e.target.value)}
-                />
-                <input
-                  placeholder="生活デッドライン"
-                  style={inputStyle}
-                  value={currentData.deadline}
-                  onChange={(e) => updateField("deadline", e.target.value)}
-                />
-                <textarea
-                  placeholder="【今日話した内容】"
-                  style={textareaStyle}
-                  value={currentData.todayTalk}
-                  onChange={(e) => updateField("todayTalk", e.target.value)}
-                />
-                <textarea
-                  placeholder="【1週間後の状態】"
-                  style={textareaStyle}
-                  value={currentData.nextState}
-                  onChange={(e) => updateField("nextState", e.target.value)}
-                />
-              </>
-            )}
-
-            {activeTab === "AP日報" && (
-              <textarea
-                placeholder="標準AP日報の内容"
-                value={currentData.text}
-                onChange={(e) => updateField("text", e.target.value)}
-                style={{ ...textareaStyle, minHeight: "160px" }}
-              />
             )}
 
             <button onClick={handleGenerate} style={mainButton}>
@@ -553,34 +259,12 @@ export default function Home() {
             </button>
           </div>
 
-          <div
-            style={{
-              background: "white",
-              borderRadius: "16px",
-              padding: "24px",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-            }}
-          >
-            <h2 style={{ marginBottom: "16px", fontSize: isMobile ? "24px" : "28px" }}>
-              生成コメント
-            </h2>
-
-            <button onClick={handleCopy} style={subButton}>
-              コピー
-            </button>
-
-            <div
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-                padding: "14px",
-                minHeight: "250px",
-                marginTop: "10px",
-                lineHeight: 1.6,
-                whiteSpace: "pre-wrap",
-              }}
-            >
-              {currentData.result || "ここに結果が出る"}
+          {/* 右 */}
+          <div style={{ background: "white", borderRadius: "16px", padding: "24px" }}>
+            <h2>生成コメント</h2>
+            <button onClick={handleCopy}>コピー</button>
+            <div style={{ marginTop: "10px", whiteSpace: "pre-wrap" }}>
+              {currentData.result}
             </div>
           </div>
         </div>
@@ -591,42 +275,20 @@ export default function Home() {
 
 const inputStyle = {
   width: "100%",
-  padding: "12px",
+  padding: "10px",
   marginBottom: "10px",
-  borderRadius: "8px",
-  border: "1px solid #ccc",
-  boxSizing: "border-box",
 };
 
 const textareaStyle = {
   width: "100%",
-  minHeight: "100px",
-  padding: "12px",
+  height: "100px",
   marginBottom: "10px",
-  borderRadius: "8px",
-  border: "1px solid #ccc",
-  boxSizing: "border-box",
-  resize: "vertical",
 };
 
 const mainButton = {
-  marginTop: "10px",
   background: "#eab308",
   color: "white",
-  padding: "12px",
-  border: "none",
-  borderRadius: "10px",
-  width: "100%",
-  fontWeight: "bold",
-  cursor: "pointer",
-};
-
-const subButton = {
-  background: "#eab308",
-  color: "white",
-  padding: "8px 14px",
+  padding: "10px",
   border: "none",
   borderRadius: "8px",
-  cursor: "pointer",
-  fontWeight: "bold",
 };
