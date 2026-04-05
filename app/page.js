@@ -7,7 +7,7 @@ const tabs = ["AP日報", "モーニング", "ミーティング", "OB", "定着
 const templates = {
   AP日報: ["標準AP日報"],
   モーニング: ["モーニング振り返り", "モーニング依頼"],
-  ミーティング: ["ミーティング振り返り"],
+  ミーティング: ["ミーティング振り返り", "セットアップ"],
   OB: ["OB振り返り"],
   定着: ["定着振り返り"],
 };
@@ -162,12 +162,23 @@ export default function Home() {
         `【着地】\n${currentData.landing}`;
     }
 
-    if (activeTab === "ミーティング") {
+    if (activeTab === "ミーティング" && template === "ミーティング振り返り") {
       resultText =
         `【ミーティング振り返り】\n` +
         `担当者/AP名: ${currentData.person}\n` +
         `日付: ${currentData.date}\n` +
         `スピーカー: ${currentData.speaker}\n\n` +
+        `【内容】\n${currentData.content}\n\n` +
+        `【気づき】\n${currentData.insight}\n\n` +
+        `【AP】\n${currentData.ap}`;
+    }
+
+    if (activeTab === "ミーティング" && template === "セットアップ") {
+      resultText =
+        `【セットアップ】\n` +
+        `担当者/AP名: ${currentData.person}\n` +
+        `日付: ${currentData.date}\n` +
+        `セットアップした方: ${currentData.speaker}\n\n` +
         `【内容】\n${currentData.content}\n\n` +
         `【気づき】\n${currentData.insight}\n\n` +
         `【AP】\n${currentData.ap}`;
@@ -462,7 +473,9 @@ export default function Home() {
                   onChange={(e) => updateField("date", e.target.value)}
                 />
                 <input
-                  placeholder="スピーカー"
+                  placeholder={
+                    template === "セットアップ" ? "セットアップした方" : "スピーカー"
+                  }
                   style={inputStyle}
                   value={currentData.speaker}
                   onChange={(e) => updateField("speaker", e.target.value)}
