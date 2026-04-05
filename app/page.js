@@ -20,6 +20,8 @@ const emptyTabData = {
   },
   モーニング: {
     person: "",
+
+    // モーニング振り返り
     date: "",
     manner: "",
     impact: "",
@@ -28,6 +30,15 @@ const emptyTabData = {
     insight: "",
     ap: "",
     vision: "",
+
+    // モーニング依頼
+    targetAge: "",
+    joinWeek: "",
+    currentState: "",
+    issue: "",
+    request: "",
+    landing: "",
+
     result: "",
   },
   ミーティング: {
@@ -108,9 +119,9 @@ export default function Home() {
         `内容:\n${currentData.text}`;
     }
 
-    if (activeTab === "モーニング") {
+    if (activeTab === "モーニング" && template === "モーニング振り返り") {
       resultText =
-        `【${template}】\n` +
+        `【モーニング振り返り】\n` +
         `担当者/AP名: ${currentData.person}\n` +
         `日付: ${currentData.date}\n` +
         `【マナー】\n${currentData.manner}\n\n` +
@@ -120,6 +131,18 @@ export default function Home() {
         `【気づき】\n${currentData.insight}\n\n` +
         `【AP】\n${currentData.ap}\n\n` +
         `【ビジョン】\n${currentData.vision}`;
+    }
+
+    if (activeTab === "モーニング" && template === "モーニング依頼") {
+      resultText =
+        `【モーニング依頼】\n` +
+        `担当者/AP名: ${currentData.person}\n` +
+        `ターゲット（年齢）: ${currentData.targetAge}\n` +
+        `入社〇週目: ${currentData.joinWeek}\n\n` +
+        `【現状】\n${currentData.currentState}\n\n` +
+        `【課題】\n${currentData.issue}\n\n` +
+        `【要望】\n${currentData.request}\n\n` +
+        `【着地】\n${currentData.landing}`;
     }
 
     if (activeTab === "ミーティング") {
@@ -275,7 +298,7 @@ export default function Home() {
               onChange={(e) => updateField("person", e.target.value)}
             />
 
-            {activeTab === "モーニング" && (
+            {activeTab === "モーニング" && template === "モーニング振り返り" && (
               <>
                 <input
                   placeholder="日付"
@@ -324,6 +347,47 @@ export default function Home() {
                   style={textareaStyle}
                   value={currentData.vision}
                   onChange={(e) => updateField("vision", e.target.value)}
+                />
+              </>
+            )}
+
+            {activeTab === "モーニング" && template === "モーニング依頼" && (
+              <>
+                <input
+                  placeholder="ターゲット（年齢）"
+                  style={inputStyle}
+                  value={currentData.targetAge}
+                  onChange={(e) => updateField("targetAge", e.target.value)}
+                />
+                <input
+                  placeholder="入社〇週目"
+                  style={inputStyle}
+                  value={currentData.joinWeek}
+                  onChange={(e) => updateField("joinWeek", e.target.value)}
+                />
+                <textarea
+                  placeholder="【現状】"
+                  style={textareaStyle}
+                  value={currentData.currentState}
+                  onChange={(e) => updateField("currentState", e.target.value)}
+                />
+                <textarea
+                  placeholder="【課題】"
+                  style={textareaStyle}
+                  value={currentData.issue}
+                  onChange={(e) => updateField("issue", e.target.value)}
+                />
+                <textarea
+                  placeholder="【要望】"
+                  style={textareaStyle}
+                  value={currentData.request}
+                  onChange={(e) => updateField("request", e.target.value)}
+                />
+                <textarea
+                  placeholder="【着地】"
+                  style={textareaStyle}
+                  value={currentData.landing}
+                  onChange={(e) => updateField("landing", e.target.value)}
                 />
               </>
             )}
