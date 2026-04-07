@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+const STORAGE_KEY = "reflection_sheet_v1";
+
 const tabs = ["AP日報", "モーニング", "ミーティング", "OB", "定着"];
 
 const templates = {
@@ -77,6 +79,7 @@ function createEmptyTabData() {
       talked: "",
       attendance: "",
       deadline: "",
+      quitReason: "",
       todayTalk: "",
       setupBy: "",
       nextSchedule: "",
@@ -93,6 +96,7 @@ export default function Home() {
   const [template, setTemplate] = useState("標準AP日報");
   const [isMobile, setIsMobile] = useState(false);
   const [tabData, setTabData] = useState(createEmptyTabData());
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -100,6 +104,49 @@ export default function Home() {
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        const fresh = createEmptyTabData();
+
+        setActiveTab(parsed.activeTab || "AP日報");
+        setTemplate(parsed.template || "標準AP日報");
+        setTabData({
+          ...fresh,
+          ...(parsed.tabData || {}),
+          AP日報: { ...fresh.AP日報, ...(parsed.tabData?.AP日報 || {}) },
+          モーニング: { ...fresh.モーニング, ...(parsed.tabData?.モーニング || {}) },
+          ミーティング: { ...fresh.ミーティング, ...(parsed.tabData?.ミーティング || {}) },
+          OB: { ...fresh.OB, ...(parsed.tabData?.OB || {}) },
+          定着: { ...fresh.定着, ...(parsed.tabData?.定着 || {}) },
+        });
+      }
+    } catch (error) {
+      console.error("保存データの読み込みに失敗しました", error);
+    } finally {
+      setIsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          activeTab,
+          template,
+          tabData,
+        })
+      );
+    } catch (error) {
+      console.error("保存に失敗しました", error);
+    }
+  }, [activeTab, template, tabData, isLoaded]);
 
   const currentData = tabData[activeTab];
 
@@ -202,12 +249,13 @@ export default function Home() {
         `稼働時間: ${currentData.hours}\n` +
         `トーク覚えたか: ${currentData.talked}\n` +
         `勤怠ブレあったか: ${currentData.attendance}\n` +
-        `生活デッドライン: ${currentData.deadline}\n` +
+        `生活デッドライン: ${currentData.deadline}\n\n` +
+        `【辞める理由があるなら】\n${currentData.quitReason}\n\n` +
+        `【今日話した内容】\n${currentData.todayTalk}\n\n` +
         `セットアップ組んだ人: ${currentData.setupBy}\n` +
         `次回予定日: ${currentData.nextSchedule}\n` +
         `クレームリスク: ${currentData.claimRisk}\n` +
         `天才と褒めたか: ${currentData.praised}\n\n` +
-        `【今日話した内容】\n${currentData.todayTalk}\n\n` +
         `【1週間後どういう状態にするか】\n${currentData.nextState}`;
     }
 
@@ -217,6 +265,23 @@ export default function Home() {
   const handleCopy = () => {
     navigator.clipboard.writeText(currentData.result || "");
     alert("コピーしました！");
+  };
+
+  const handleSave = () => {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          activeTab,
+          template,
+          tabData,
+        })
+      );
+      alert("保存しました！");
+    } catch (error) {
+      console.error("保存に失敗しました", error);
+      alert("保存に失敗しました");
+    }
   };
 
   return (
@@ -312,9 +377,14 @@ export default function Home() {
                 {activeTab} 入力
               </h2>
 
-              <button onClick={handleReset} style={subButton}>
-                このタブをリセット
-              </button>
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                <button onClick={handleSave} style={subButton}>
+                  保存
+                </button>
+                <button onClick={handleReset} style={subButton}>
+                  このタブをリセット
+                </button>
+              </div>
             </div>
 
             {activeTab === "AP日報" && (
@@ -593,6 +663,12 @@ export default function Home() {
                   onChange={(e) => updateField("deadline", e.target.value)}
                 />
                 <textarea
+                  placeholder="【辞める理由があるなら】"
+                  style={textareaStyle}
+                  value={currentData.quitReason}
+                  onChange={(e) => updateField("quitReason", e.target.value)}
+                />
+                <textarea
                   placeholder="【今日話した内容】"
                   style={textareaStyle}
                   value={currentData.todayTalk}
@@ -648,9 +724,14 @@ export default function Home() {
               生成コメント
             </h2>
 
-            <button onClick={handleCopy} style={subButton}>
-              コピー
-            </button>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              <button onClick={handleSave} style={subButton}>
+                保存
+              </button>
+              <button onClick={handleCopy} style={subButton}>
+                コピー
+              </button>
+            </div>
 
             <div
               style={{
